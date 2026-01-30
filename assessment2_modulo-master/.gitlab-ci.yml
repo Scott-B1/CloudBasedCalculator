@@ -1,0 +1,32 @@
+image: ruby:2.7.2
+
+stages:
+  - test
+
+tests:
+  stage: test
+  services:
+  - postgres
+  cache:
+    paths:
+      - apt-cache
+      - node_modules
+      - vendor/bundle
+  variables:
+      DB_HOST: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      RAILS_ENV: test
+      BUNDLE_PATH: vendor/bundle
+  before_script:
+    - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
+    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+    - apt-get update -qq && apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -yqq yarn
+    - yarn install
+    - cd modulo/
+    - gem install bundler
+    - bundle install
+    - bundle exec rails db:setup
+  script:
+    - bundle exec rails test  test/controllers/modulo_controller_test.rb

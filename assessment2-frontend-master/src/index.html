@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WebCalc</title>
+
+<script type="text/javascript">
+
+let value = 0;
+let x = 0;
+let y = 0;
+let operation = '';
+
+let proxyURL = "http://proxy.40208701.qpc.hal.davecutting.uk";
+
+function Display()
+{
+    document.getElementById('display').value = value;
+}
+
+function Clear()
+{
+    value = 0;
+    x = 0;
+    y = 0;
+    operation = '';
+    Display();
+}
+
+function NumClick(n)
+{
+    if (value == 0)
+        value = n;
+    else
+    {
+        value *= 10;
+        value += n;
+    }
+
+    Display();
+}
+
+function Plus()
+{
+    // if we have an outstanding operation resolve it
+    if (operation != '')
+        Equals();
+
+    x = value;
+    value = 0;
+    operation = '+';
+
+    Display();
+}
+
+function Minus()
+{
+    // if we have an outstanding operation resolve it
+    if (operation != '')
+        Equals();
+
+    x = value;
+    value = 0;
+    operation = '-';
+
+    Display();
+}
+
+function Multiply()
+{
+    // if we have an outstanding operation resolve it
+    if (operation != '')
+        Equals();
+
+    x = value;
+    value = 0;
+    operation = '*';
+
+    Display();
+}
+
+function Square()
+{
+    // if we have an outstanding operation resolve it
+    if (operation != '')
+        Equals();
+
+    x = value;
+    value = 0;
+    operation = 'x^2';
+
+    Display();
+}
+
+function Divide()
+{
+    // if we have an outstanding operation resolve it
+    if (operation != '')
+        Equals();
+
+    x = value;
+    value = 0;
+    operation = '/';
+
+    Display();
+}
+
+function Modulo()
+{
+    // if we have an outstanding operation resolve it
+    if (operation != '')
+        Equals();
+
+    x = value;
+    value = 0;
+    operation = '%';
+
+    Display();
+}
+
+function Save()
+{
+    // if we have an outstanding operation resolve it
+    if (operation != '')
+        Equals();
+
+    x = value;
+    value = 0;
+    operation = 's';
+
+    Display();
+}
+
+function Load()
+{
+    // if we have an outstanding operation resolve it
+    if (operation != '')
+        Equals();
+
+    x = value;
+    value = 0;
+    operation = 'l';
+
+    Display();
+}
+
+function StaticRoute(funcParam) //static routing for task 1b, using switch statement to pass operators into the proxy
+{
+  switch(funcParam) {
+    case "add":
+      var a = "&operator=add";
+      break;
+    case "subtract":
+      var a = "&operator=subtract";
+      break;
+    case "multiply":
+      var a = "&operator=multiply";
+      break;
+    case "square":
+      var a = "&operator=square";
+      break;
+    case "divide":
+      var a = "&operator=divide";
+      break;
+    case "modulo":
+      var a = "&operator=modulo";
+      break;
+    case "save":
+      var a = "&operator=save";
+      break;
+    case "load":
+      var a = "&operator=load";
+      break;
+    default:
+      var a = "&operator=add";
+    }
+
+    return a;
+}
+
+function Equals()
+{
+    if (operation == '')
+        return;
+
+    y = value;
+
+    if (operation == '+')
+    {
+        //let ans = x+y; // nah - too easy :)
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var j = JSON.parse(this.response);
+                x=0;
+                y=0;
+                operation='';
+                value = j.answer;
+                if(j.error){
+                  alert("Error using addition")
+                }
+                Display();
+            } else if (this.status >= 400 && this.status <= 600) {
+                alert("Error on http status")
+            }
+        };
+
+        xhttp.open("GET",proxyURL+"?x="+x+"&y="+y+StaticRoute("add"));
+        xhttp.send();
+
+        return;
+    }
+    else if (operation == '-')
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var j = JSON.parse(this.response);
+                x=0;
+                y=0;
+                operation='';
+                value = j.answer;
+                if(j.error){
+                  alert("Error using subtraction")
+                }
+                Display();
+            } else if (this.status >= 400 && this.status <= 600) {
+                alert("Error on http status")
+            }
+        };
+
+        xhttp.open("GET",proxyURL+"?x="+x+"&y="+y+StaticRoute("subtract"));
+        xhttp.send();
+
+        return;
+    }
+    else if (operation == '*')
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var j = JSON.parse(this.response);
+                x=0;
+                y=0;
+                operation='';
+                value = j.answer;
+                if(j.error){
+                  alert("Error using multiplication")
+                }
+                Display();
+            } else if (this.status >= 400 && this.status <= 600) {
+                alert("Error on http status")
+            }
+        };
+
+        xhttp.open("GET",proxyURL+"?x="+x+"&y="+y+StaticRoute("multiply"));
+        xhttp.send();
+
+        return;
+    }
+    else if (operation == 'x^2')
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var j = JSON.parse(this.response);
+                x=0;
+                y=0;
+                operation='';
+                value = j;
+                if(j.error){
+                  alert("Error using square")
+                }
+                Display();
+            } else if (this.status >= 400 && this.status <= 600) {
+                alert("Error on http status")
+            }
+        };
+
+        xhttp.open("GET",proxyURL+"?x="+x+StaticRoute("square"));
+        xhttp.send();
+
+        return;
+    }
+    else if (operation == '/')
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var j = JSON.parse(this.response);
+                x=0;
+                y=0;
+                operation='';
+                value = j;
+                if(j.error){
+                  alert("Error using divide")
+                }
+                Display();
+            } else if (this.status >= 400 && this.status <= 600) {
+                alert("Error on http status")
+            }
+        };
+
+        xhttp.open("GET",proxyURL+"?x="+x+"&y="+y+StaticRoute("divide"));
+        xhttp.send();
+
+        return;
+    }
+    else if (operation == '%')
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var j = JSON.parse(this.response);
+                x=0;
+                y=0;
+                operation='';
+                value = j;
+                if(j.error){
+                  alert("Error using modulo")
+                }
+                Display();
+            } else if (this.status >= 400 && this.status <= 600) {
+                alert("Error on http status")
+            }
+        };
+
+        xhttp.open("GET",proxyURL+"?x="+x+"&y="+y+StaticRoute("modulo"));
+        xhttp.send();
+
+        return;
+    }
+    else if (operation == 's')
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var j = JSON.parse(this.response);
+                x=0;
+                y=0;
+                operation='';
+                value = j;
+                if(j.error){
+                  alert("Error using save")
+                }
+                Display();
+            } else if (this.status >= 400 && this.status <= 600) {
+                alert("Error on http status")
+            }
+        };
+
+        xhttp.open("GET",proxyURL+"?x="+x+StaticRoute("save"));
+        xhttp.send();
+
+        return;
+    }
+    else if (operation == 'l')
+    {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var j = JSON.parse(this.response);
+                x=0;
+                y=0;
+                operation='';
+                value = j;
+                if(j.error){
+                  alert("Error using load")
+                }
+                Display();
+            } else if (this.status >= 400 && this.status <= 600) {
+                alert("Error on http status")
+            }
+        };
+
+        xhttp.open("GET",proxyURL+"?x="+x+StaticRoute("load"));
+        xhttp.send();
+
+        return;
+    }
+}
+
+</script>
+
+<style type="text/css">
+body  {
+    font-size: 150%;
+    font-family: monospace;
+}
+
+#logo
+{
+    font-family: Calibri, sans-serif;
+    font-weight: lighter;
+    color: #505050;
+    margin: 0.5em;
+}
+
+#calculator
+{
+    text-align: center;
+    margin-top: 1em;
+}
+
+#display {
+    font-size: 100%;
+    padding: 0.2em;
+    margin: 0.2em;
+    font-family: monospace;
+    letter-spacing: 0.1em;
+}
+
+.calc1 {
+    border: solid #d0d0d0 1px;
+    background-color: #f0f0f0;
+    padding: 1.5em;
+    margin: 1em;
+}
+</style>
+
+</head>
+<body>
+<div id="calculator">
+    <div id="logo">
+        Casidave Calcutron
+    </div>
+    <div>
+        <input type="text" id="display" readonly="1" value="">
+    </div>
+    <div>
+        <button class="calc1" onclick="Clear();">C</button>
+        <button class="calc1" onclick="Square()">x^2</button>
+        <button class="calc1" onclick="Save()">Save</button>
+        <button class="calc1" onclick="Load()">Load</button>
+    </div>
+    <div>
+        <button class="calc1" onclick="NumClick(7);">7</button>
+        <button class="calc1" onclick="NumClick(8);">8</button>
+        <button class="calc1" onclick="NumClick(9);">9</button>
+        <button class="calc1" onclick="Plus();">+</button>
+    </div>
+    <div>
+        <button class="calc1" onclick="NumClick(4);">4</button>
+        <button class="calc1" onclick="NumClick(5);">5</button>
+        <button class="calc1" onclick="NumClick(6);">6</button>
+        <button class="calc1" onclick="Minus();">-</button>
+    </div>
+    <div>
+        <button class="calc1" onclick="NumClick(1);">1</button>
+        <button class="calc1" onclick="NumClick(2);">2</button>
+        <button class="calc1" onclick="NumClick(3);">3</button>
+        <button class="calc1" onclick="Equals();">=</button>
+    </div>
+    <div>
+        <button class="calc1" onclick="NumClick(0);">0</button>
+        <button class="calc1" onclick="Modulo()">%</button>
+        <button class="calc1" onclick="Multiply()">*</button>
+        <button class="calc1" onclick="Divide()">/</button>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    value = 1234;
+    Display();
+</script>
+
+</html>

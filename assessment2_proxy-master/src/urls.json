@@ -1,0 +1,14 @@
+{
+    "add" : "http://add.40208701.qpc.hal.davecutting.uk/",
+    "subtract" : "http://subtract.40208701.qpc.hal.davecutting.uk/",
+    "multiply" : "http://multiply.40208701.qpc.hal.davecutting.uk/",
+    "square" : "http://square.40208701.qpc.hal.davecutting.uk/square",
+    "divide" : "https://europe-west2-groovy-groove-299201.cloudfunctions.net/divide40208701/divide",
+    "modulo" : "http://modulo.40208701.qpc.hal.davecutting.uk/",
+    "add2" : "http://add2.40208701.qpc.hal.davecutting.uk/",
+    "subtract2" : "http://subtract2.40208701.qpc.hal.davecutting.uk/",
+    "multiply2" : "http://multiply2.40208701.qpc.hal.davecutting.uk/",
+    "square2" : "http://square2.40208701.qpc.hal.davecutting.uk/square",
+    "divide2" : "https://us-central1-groovy-groove-299201.cloudfunctions.net/divide40208701-1/divide",
+    "modulo2" : "http://modulo2.40208701.qpc.hal.davecutting.uk/"
+}

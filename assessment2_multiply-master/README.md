@@ -1,0 +1,1 @@
+Function for multiplying a number
