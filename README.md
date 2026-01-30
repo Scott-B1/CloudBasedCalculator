@@ -1,5 +1,5 @@
-# CloudComputingCalculator
-Cloud based computing calculator with each function in a different programming language, and hosted at the time on various different cloud platforms. 
+# Cloud Hosted Calculator
+Cloud based calculator with each function in a different programming language, and hosted at the time on various different cloud platforms. 
 This was done as a university project.
 
 # Functions breakdown:
