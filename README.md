@@ -1,6 +1,6 @@
 # Cloud Hosted Calculator
 Cloud based calculator with each function in a different programming language, and hosted at the time on various different cloud platforms. 
-This was done as a university project.
+This was done as a solo university project.
 
 # Functions breakdown:
 
